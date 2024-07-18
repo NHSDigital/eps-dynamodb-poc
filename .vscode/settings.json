@@ -1,11 +1,13 @@
 {
   "cSpell.words": [
+    "devcontainer",
     "direnv",
     "eamodio",
     "envrc",
     "mkhl",
     "pylint",
     "pytest",
+    "Riak",
     "shellcheck",
     "timonwong",
     "venv"
