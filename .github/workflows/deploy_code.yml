@@ -1,0 +1,101 @@
+name: Deploy code
+
+on:
+  workflow_call:
+    inputs:
+      ARTIFACT_BUCKET_PREFIX:
+        required: true
+        type: string
+      AWS_ENVIRONMENT:
+        required: true
+        type: string
+      BUILD_ARTIFACT:
+        required: true
+        type: string
+      COMMIT_ID:
+        required: true
+        type: string
+      LOG_LEVEL:
+        required: false
+        type: string
+        default: INFO
+      LOG_RETENTION_DAYS:
+        required: true
+        type: string
+      STACK_NAME:
+        required: true
+        type: string
+    secrets:
+      CLOUD_FORMATION_DEPLOY_ROLE:
+        required: true
+
+jobs:
+  deploy_code_and_api:
+    runs-on: ubuntu-latest
+    environment: ${{inputs.AWS_ENVIRONMENT}}
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - name: Checkout local github actions
+        uses: actions/checkout@v4
+        with:
+          ref: ${{env.BRANCH_NAME}}
+          fetch-depth: 0
+          sparse-checkout: |
+            .github
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-west-2
+          role-to-assume: ${{secrets.CLOUD_FORMATION_DEPLOY_ROLE}}
+          role-session-name: github-actions
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{inputs.BUILD_ARTIFACT}}
+          path: .
+
+      - name: Download python dependency artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: python_dependency_files
+          path: .
+
+      - name: Install asdf
+        uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
+        with:
+          asdf_branch: v0.11.3
+
+      - name: Cache asdf
+        uses: actions/cache@v4
+        with:
+          path: ~/.asdf
+          key: ${{runner.os}}-asdf-${{hashFiles('**/.tool-versions')}}
+          restore-keys: ${{runner.os}}-asdf-
+
+      - name: Install asdf dependencies in .tool-versions
+        uses: asdf-vm/actions/install@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
+        with:
+          asdf_branch: v0.11.3
+        env:
+          PYTHON_CONFIGURE_OPTS: --enable-shared
+
+      - name: Run make install-python
+        run: make install-python
+
+      - name: release code
+        shell: bash
+        working-directory: .github/scripts
+        env:
+          ARTIFACT_BUCKET_PREFIX: dynamodb_poc/${{inputs.ARTIFACT_BUCKET_PREFIX}}
+          COMMIT_ID: ${{inputs.COMMIT_ID}}
+          LOG_LEVEL: ${{inputs.LOG_LEVEL}}
+          LOG_RETENTION_DAYS: ${{inputs.LOG_RETENTION_DAYS}}
+          STACK_NAME: ${{inputs.STACK_NAME}}
+          TARGET_ENVIRONMENT: ${{inputs.AWS_ENVIRONMENT}}
+          TEMPLATE_FILE: template.yaml
+        run: ./deploy_code.sh

@@ -1,4 +1,4 @@
-name: PR Title Check
+name: PR title check
 
 on:
   workflow_call:
@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Check PR Title is Prefixed with Change Type
         env:
-          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_TITLE: ${{github.event.pull_request.title}}
         run: |
           if [[ "$PR_TITLE" =~ ^(Fix|Update|New|Breaking|Docs|Build|Upgrade|Chore):.*$ ]]; then
             echo "PR title is prefixed with change type."
@@ -20,9 +20,10 @@ jobs:
             echo "https://github.com/NHSDigital/eps-prescription-status-update-api/blob/main/CONTRIBUTING.md"
             exit 1
           fi
+
       - name: Check PR Title contains Ticket/Dependabot Reference
         env:
-          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_TITLE: ${{github.event.pull_request.title}}
         run: |
           if [[ "$PR_TITLE" =~ ^.*:.*\[([A-Z]+-[0-9]+|dependabot)\].*-.*$ ]]; then
             echo "PR title contains ticket or dependabot reference."
