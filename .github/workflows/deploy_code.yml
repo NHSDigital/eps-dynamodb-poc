@@ -77,7 +77,7 @@ jobs:
       - name: Run make install-python
         run: make install-python
 
-      - name: release code
+      - name: Release Code
         shell: bash
         working-directory: .github/scripts
         env:

@@ -41,21 +41,12 @@ jobs:
             }
           result-encoding: string
 
-  get_commit_id:
-    runs-on: ubuntu-latest
-    outputs:
-      commit_id: ${{steps.commit_id.outputs.commit_id}}
-    steps:
-      - name: Get Commit ID
-        id: commit_id
-        run: echo "commit_id=${{github.sha}}" >> "$GITHUB_OUTPUT"
-
   package_code:
     needs: get_issue_number
     uses: ./.github/workflows/package_and_upload_code.yml
 
   deploy_code:
-    needs: [get_issue_number, package_code, get_commit_id]
+    needs: [get_issue_number, package_code]
     uses: ./.github/workflows/deploy_code.yml
     with:
       STACK_NAME: ddb-poc-pr-${{needs.get_issue_number.outputs.issue_number}}

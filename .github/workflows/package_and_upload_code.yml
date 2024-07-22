@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  package_code_and_api:
+  package_code:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -51,7 +51,9 @@ jobs:
         name: Upload build artifact
         with:
           name: packaged_code
-          path: .aws-sam/build
+          path: |
+            .aws-sam/build
+            README.md
             
       - uses: actions/upload-artifact@v4
         name: Upload python dependency files
