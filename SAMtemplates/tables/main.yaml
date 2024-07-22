@@ -35,11 +35,11 @@ Resources:
               KeyType: HASH
           Projection:
             ProjectionType: KEYS_ONLY
-        - IndexName: PrescriptionIDPatientNHSNumberIndex
+        - IndexName: PatientNHSNumberPrescriptionIDIndex
           KeySchema:
-            - AttributeName: PrescriptionID
-              KeyType: HASH
             - AttributeName: PatientNHSNumber
+              KeyType: HASH
+            - AttributeName: PrescriptionID
               KeyType: RANGE
           Projection:
             ProjectionType: KEYS_ONLY
