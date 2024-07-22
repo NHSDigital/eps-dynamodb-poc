@@ -30,8 +30,6 @@ jobs:
       ARTIFACT_BUCKET_PREFIX: ${{needs.get_commit_id.outputs.commit_id}}
       AWS_ENVIRONMENT: dev
       BUILD_ARTIFACT: packaged_code
-      COMMIT_ID: ${{needs.get_commit_id.outputs.commit_id}}
-      LOG_RETENTION_DAYS: 30
-      STACK_NAME: ddb
+      STACK_NAME: ddb-poc
     secrets:
       CLOUD_FORMATION_DEPLOY_ROLE: ${{secrets.DEV_CLOUD_FORMATION_DEPLOY_ROLE}}

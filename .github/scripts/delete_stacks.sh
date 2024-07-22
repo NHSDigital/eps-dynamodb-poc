@@ -6,11 +6,11 @@
 REPO_NAME=eps-dynamodb-poc
 
 # this should be a regex used in jq command that parses the output from aws cloudformation list-stacks and just captures stacks we are interested in
-CAPTURE_REGEX="^ddb-pr-(\\d+)(-sandbox)?$"
+CAPTURE_REGEX="^ddb-poc-pr-(\\d+)(-sandbox)?$"
 
 # this should be a regex that is used to get the pull request id from the cloud formation stack name
 # this is used in a replace command to replace the stack name so what is left is just the pull request id
-PULL_REQUEST_STACK_REGEX=ddb-pr-
+PULL_REQUEST_STACK_REGEX=ddb-poc-pr-
 
 main() {
   delete_cloudformation_stacks

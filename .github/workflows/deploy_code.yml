@@ -12,16 +12,6 @@ on:
       BUILD_ARTIFACT:
         required: true
         type: string
-      COMMIT_ID:
-        required: true
-        type: string
-      LOG_LEVEL:
-        required: false
-        type: string
-        default: INFO
-      LOG_RETENTION_DAYS:
-        required: true
-        type: string
       STACK_NAME:
         required: true
         type: string
@@ -92,10 +82,6 @@ jobs:
         working-directory: .github/scripts
         env:
           ARTIFACT_BUCKET_PREFIX: dynamodb_poc/${{inputs.ARTIFACT_BUCKET_PREFIX}}
-          COMMIT_ID: ${{inputs.COMMIT_ID}}
-          LOG_LEVEL: ${{inputs.LOG_LEVEL}}
-          LOG_RETENTION_DAYS: ${{inputs.LOG_RETENTION_DAYS}}
           STACK_NAME: ${{inputs.STACK_NAME}}
-          TARGET_ENVIRONMENT: ${{inputs.AWS_ENVIRONMENT}}
           TEMPLATE_FILE: template.yaml
         run: ./deploy_code.sh

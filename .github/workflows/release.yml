@@ -27,11 +27,8 @@ jobs:
     uses: ./.github/workflows/deploy_code.yml
     with:
       ARTIFACT_BUCKET_PREFIX: ${{needs.get_commit_id.outputs.commit_id}}
-      STACK_NAME: ddb
+      STACK_NAME: ddb-poc
       AWS_ENVIRONMENT: dev
       BUILD_ARTIFACT: packaged_code
-      COMMIT_ID: ${{needs.get_commit_id.outputs.commit_id}}
-      LOG_LEVEL: DEBUG
-      LOG_RETENTION_DAYS: 30
     secrets:
       CLOUD_FORMATION_DEPLOY_ROLE: ${{secrets.DEV_CLOUD_FORMATION_DEPLOY_ROLE}}

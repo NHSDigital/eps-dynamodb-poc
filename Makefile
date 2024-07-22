@@ -39,7 +39,7 @@ sam-sync: guard-AWS_DEFAULT_PROFILE guard-STACK_NAME
 		--watch \
 		--template-file SAMtemplates/main_template.yaml
 
-sam-deploy-package: guard-ARTIFACT_BUCKET guard-ARTIFACT_BUCKET_PREFIX guard-STACK_NAME guard-TEMPLATE_FILE guard-CLOUD_FORMATION_EXECUTION_ROLE guard-COMMIT_ID guard-LOG_RETENTION_DAYS guard-TARGET_ENVIRONMENT
+sam-deploy-package: guard-ARTIFACT_BUCKET guard-ARTIFACT_BUCKET_PREFIX guard-STACK_NAME guard-TEMPLATE_FILE guard-CLOUD_FORMATION_EXECUTION_ROLE
 	sam deploy \
 		--template-file $$TEMPLATE_FILE \
 		--stack-name $$STACK_NAME \
@@ -51,13 +51,7 @@ sam-deploy-package: guard-ARTIFACT_BUCKET guard-ARTIFACT_BUCKET_PREFIX guard-STA
 		--no-fail-on-empty-changeset \
 		--role-arn $$CLOUD_FORMATION_EXECUTION_ROLE \
 		--no-confirm-changeset \
-		--force-upload \
-		--tags "commit_id=$$COMMIT_ID" \
-		--parameter-overrides \
-			  CommitId=$$COMMIT_ID \
-			  LogLevel=$$LOG_LEVEL \
-			  LogRetentionInDays=$$LOG_RETENTION_DAYS \
-			  Env=$$TARGET_ENVIRONMENT
+		--force-upload
 
 
 lint: lint-sam-templates lint-python-scripts lint-python-code lint-github-actions lint-github-action-scripts

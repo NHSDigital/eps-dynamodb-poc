@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: DDB POC DynamoDB tables and related resources
+
+Parameters:
+  StackName:
+    Type: String
+    Default: none
+
+Resources:
+  DynamoDbPocTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${StackName}-DynamoDbPoc
+      AttributeDefinitions:
+        - AttributeName: PrescriptionID
+          AttributeType: S
+        - AttributeName: PatientNHSNumber
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PrescriptionID
+          KeyType: HASH
+        - AttributeName: PatientNHSNumber
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: PrescriptionIDIndex
+          KeySchema:
+            - AttributeName: PrescriptionID
+              KeyType: HASH
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: PatientNHSNumberIndex
+          KeySchema:
+            - AttributeName: PatientNHSNumber
+              KeyType: HASH
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: PrescriptionIDPatientNHSNumberIndex
+          KeySchema:
+            - AttributeName: PrescriptionID
+              KeyType: HASH
+            - AttributeName: PatientNHSNumber
+              KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
+
+  DynamoDbPocResources:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: dynamodb_resources.yaml
+      Parameters:
+        StackName: !Ref StackName
+        TableName: !Ref DynamoDbPocTable
+        TableArn: !GetAtt DynamoDbPocTable.Arn
+
+Outputs:
+  DynamoDbPocTableName:
+    Description: DynamoDB POC table name
+    Value: !Ref DynamoDbPocTable
+
+  DynamoDbPocTableArn:
+    Description: DynamoDB POC table arn
+    Value: !GetAtt DynamoDbPocTable.Arn
