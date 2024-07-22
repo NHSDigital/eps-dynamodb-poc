@@ -17,8 +17,6 @@ Resources:
           AttributeType: S
         - AttributeName: PatientNHSNumber
           AttributeType: S
-        - AttributeName: Record
-          AttributeType: S
       KeySchema:
         - AttributeName: PrescriptionID
           KeyType: HASH
