@@ -42,5 +42,6 @@ jobs:
       - name: run lint
         run: make lint
 
-      - name: run unit tests
-        run: make test
+      # Enable when testable code is added
+      # - name: run unit tests
+      #   run: make test
