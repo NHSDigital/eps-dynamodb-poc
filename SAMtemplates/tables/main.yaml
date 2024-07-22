@@ -17,32 +17,13 @@ Resources:
           AttributeType: S
         - AttributeName: PatientNHSNumber
           AttributeType: S
+        - AttributeName: Record
+          AttributeType: S
       KeySchema:
         - AttributeName: PrescriptionID
           KeyType: HASH
         - AttributeName: PatientNHSNumber
           KeyType: RANGE
-      GlobalSecondaryIndexes:
-        - IndexName: PrescriptionIDIndex
-          KeySchema:
-            - AttributeName: PrescriptionID
-              KeyType: HASH
-          Projection:
-            ProjectionType: KEYS_ONLY
-        - IndexName: PatientNHSNumberIndex
-          KeySchema:
-            - AttributeName: PatientNHSNumber
-              KeyType: HASH
-          Projection:
-            ProjectionType: KEYS_ONLY
-        - IndexName: PatientNHSNumberPrescriptionIDIndex
-          KeySchema:
-            - AttributeName: PatientNHSNumber
-              KeyType: HASH
-            - AttributeName: PrescriptionID
-              KeyType: RANGE
-          Projection:
-            ProjectionType: KEYS_ONLY
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
