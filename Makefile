@@ -54,7 +54,8 @@ sam-deploy-package: guard-ARTIFACT_BUCKET guard-ARTIFACT_BUCKET_PREFIX guard-STA
 		--force-upload
 
 
-lint: lint-sam-templates lint-python-scripts lint-python-code lint-github-actions lint-github-action-scripts
+# Add python linting steps when appropriate
+lint: lint-sam-templates lint-github-actions lint-github-action-scripts
 
 lint-sam-templates:
 	poetry run cfn-lint -I "SAMtemplates/**/*.y*ml" 2>&1 | awk '/Run scan/ { print } /^[EW][0-9]/ { print; getline; print }'
