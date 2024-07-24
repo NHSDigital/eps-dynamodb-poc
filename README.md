@@ -1,7 +1,7 @@
 # EPS DynamoDB POC
 
-![Build](https://github.com/NHSDigital/eps-dynamodb-poc/actions/workflows/ci.yml/badge.svg?branch=main)  
-![Release](https://github.com/NHSDigital/eps-dynamodb-poc/actions/workflows/release.yml/badge.svg?branch=main)
+[Build](https://github.com/NHSDigital/eps-dynamodb-poc/actions/workflows/ci.yml/badge.svg?branch=main)  
+[Release](https://github.com/NHSDigital/eps-dynamodb-poc/actions/workflows/release.yml/badge.svg?branch=main)
 
 ## Versions and deployments
 
@@ -29,9 +29,25 @@ The contents of this repository are protected by Crown Copyright (C).
 
 ## Development
 
-It is recommended that you use visual studio code and a devcontainer as this will install all necessary components and correct versions of tools and languages.  
-See https://code.visualstudio.com/docs/devcontainers/containers for details on how to set this up on your host machine.  
-The project uses [SAM](https://aws.amazon.com/serverless/sam/) to develop and deploy the APIs and associated resources.
+It is recommended that you use Visual Studio Code in a Linux environment with a dev container, as this will install all necessary components and correct versions of tools and languages.  
+
+### WSL
+
+If you are using a Windows machine, you will need to install WSL v2+ as detailed [here](https://docs.microsoft.com/en-us/windows/wsl/install).
+
+### Docker
+
+You will need Docker. This is straightforward enough in a Linux environment, but if you are using WSL then you'll need to install Docker Desktop for Windows as detailed [here](https://docs.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers#install-docker-desktop) and then do the following:
+- Go to Docker Desktop
+- Click the _Settings_ cog icon at the top
+- Click _Resources_, then _WSL integration_
+- Enable WSL integration for your WSL distribution by enabling the slider
+
+Restart your machine and run `sudo docker ps` command in WSL to check that the setup is complete.
+
+You will need to install the Dev Containers extension for VS Code. The extension will then prompt you to _Reopen in Container_. Do this.
+
+### Commit signing
 
 All commits must be made using [signed commits](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits).
 
@@ -47,21 +63,58 @@ and to your ~/.gnupg/gpg-agent.conf as below:
 ```
 allow-loopback-pinentry
 ```
-
-As described here:
-https://stackoverflow.com/a/59170001
+As described [here](https://stackoverflow.com/a/59170001)
 
 You will need to create the files, if they do not already exist.
 This will ensure that your VSCode bash terminal prompts you for your GPG key password.
 
 You can cache the gpg key passphrase by following instructions at https://superuser.com/questions/624343/keep-gnupg-credentials-cached-for-entire-user-session
 
-### CI Setup
+### AWS
 
-The GitHub Actions require a secret to exist on the repo called "SONAR_TOKEN".
-This can be obtained from [SonarCloud](https://sonarcloud.io/)
-as described [here](https://docs.sonarsource.com/sonarqube/latest/user-guide/user-account/generating-and-using-tokens/).
-You will need the "Execute Analysis" permission for the project (NHSDigital_eps-prescription-status-update-api) in order for the token to work.
+It is intended that the DynamoDB table (and any other resources) created via the workflows defined in this repository are interacted with via the Spine codebase. In order to do this, you must configure the AWS CLI and authenticate using SSO. To do this follow the steps below from your home directory in your Spine VM (`spineii-user@gen-spineii:~ $`):
+
+#### Install asdf:
+```
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3
+echo '. $HOME/.asdf/asdf.sh' >> ~/.bashrc
+echo '. $HOME/.asdf/completions/asdf.bash' >> ~/.bashrc
+```
+Restart your terminal.
+
+#### Install AWS CLI:
+```
+asdf plugin-add awscli
+echo awscli 2.11.20 >> .tool-versions
+asdf install
+```
+
+#### Authenticate
+**Initial set-up only** - Configure AWS SSO (use the AWS SSO portal in your browser to obtain the values):
+
+Make sure that you:
+Call your sso-session `sso-session`
+Call your profile `ddb-poc`
+Select the `EPS Development` account
+```
+aws configure sso --region eu-west-2
+```
+
+**Subsequent use** - Log-in:
+```
+aws sso login --sso-session sso-session
+```
+
+#### Use the CLI
+Export your profile so that the AWS CLI picks it up:
+```
+export AWS_PROFILE=ddb-poc
+```
+
+Check that AWS CLI works:
+```
+aws s3 ls
+```
 
 ### Pre-commit hooks
 
@@ -75,9 +128,9 @@ There are `make` commands that are run as part of the CI pipeline and help alias
 
 #### Install targets
 
-- `install-python` Installs python dependencies
-- `install-hooks` Installs git pre-commit hooks
-- `install` Runs all install targets
+- `install-python` Installs python dependencies.
+- `install-hooks` Installs git pre-commit hooks.
+- `install` Runs all install targets.
 
 #### SAM targets
 
@@ -96,7 +149,7 @@ These need AWS_DEFAULT_PROFILE and STACK_NAME environment variables set:
 
 - `sam-deploy-package` Deploys a package created by sam-build. Used in CI builds. Needs the following environment variables set.
   - ARTIFACT_BUCKET - bucket where uploaded packaged files are
-  - ARTIFACT_BUCKET_PREFIX - prefix in bucket of where uploaded packaged files ore
+  - ARTIFACT_BUCKET_PREFIX - prefix in bucket of where uploaded packaged files are
   - STACK_NAME - name of stack to deploy
   - TEMPLATE_FILE - name of template file created by sam-package
   - CLOUD_FORMATION_EXECUTION_ROLE - ARN of role that cloud formation assumes when applying the changeset
@@ -108,21 +161,21 @@ These need AWS_DEFAULT_PROFILE and STACK_NAME environment variables set:
 
 #### Linting and testing
 
-- `lint` Runs lint for all code
-- `lint-github-actions` Runs lint for github actions workflows
-- `lint-github-action-scripts` Runs shellcheck for github actions scripts
-- `lint-python` Runs lint for python code
-- `lint-sam-templates` Runs lint for SAM templates
-- `test` Runs unit tests for all code
+- `lint` Runs lint for all code.
+- `lint-github-actions` Runs lint for github actions workflows.
+- `lint-github-action-scripts` Runs shellcheck for github actions scripts.
+- `lint-python` Runs lint for python code.
+- `lint-sam-templates` Runs lint for SAM templates.
+- `test` Runs unit tests for all code.
 
 #### Check licenses
 
-- `check-licenses` Checks licenses for all python code
+- `check-licenses` Checks licenses for all python code.
 
 #### CLI Login to AWS
 
-- `aws-configure` Configures a connection to AWS
-- `aws-login` Reconnects to AWS from a previously configured connection
+- `aws-configure` Configures a connection to AWS.
+- `aws-login` Reconnects to AWS from a previously configured connection.
 
 ### Github folder
 
