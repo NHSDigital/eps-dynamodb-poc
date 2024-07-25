@@ -1,0 +1,61 @@
+// For format details, see https://aka.ms/devcontainer.json.
+// For config options, see the README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+{
+  "name": "Ubuntu",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "args": {}
+  },
+  "mounts": [
+    "source=${env:HOME}${env:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind",
+    "source=${env:HOME}${env:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind",
+    "source=${env:HOME}${env:USERPROFILE}/.gnupg,target=/home/vscode/.gnupg,type=bind"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "AmazonWebServices.aws-toolkit-vscode",
+        "eamodio.gitlens",
+        "github.vscode-pull-request-github",
+        "github.vscode-github-actions",
+        "lfm.vscode-makefile-term",
+        "mkhl.direnv",
+        "ms-python.python",
+        "ms-python.flake8",
+        "redhat.vscode-xml",
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker",
+        "timonwong.shellcheck"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/workspaces/eps-dynamodb-poc/.venv/bin/python",
+        "python.analysis.autoSearchPaths": true,
+        "python.analysis.extraPaths": [],
+        "python.testing.unittestEnabled": false,
+        "python.testing.pytestEnabled": true,
+        "pylint.enabled": false,
+        "python.linting.flake8Enabled": true,
+        "python.linting.enabled": true, // required to format on save
+        "editor.formatOnPaste": false, // required
+        "editor.formatOnType": false, // required
+        "editor.formatOnSave": true, // optional
+        "editor.formatOnSaveMode": "file",
+        "[json]": {
+          "editor.defaultFormatter": "vscode.json-language-features"
+        }
+      }
+    }
+  },
+  "postCreateCommand": "rm -f ~/.docker/config.json; git config --global --add safe.directory /workspaces/eps-dynamodb-poc; make install; make direnv-allow"
+  // "features": {},
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": ""
+  // Configure tool-specific properties.
+  // "customizations": {},
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
+}

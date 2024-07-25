@@ -1,0 +1,37 @@
+[project]
+python = "^3.12"
+
+[tool.poetry]
+name = "eps-dynamodb-poc"
+version = "0.0.1-alpha"
+description = "EPS DynamoDB Proof of Concept"
+license = "MIT"
+authors = [
+    "Matthew Popat <matthew.popat1@nhs.net>",
+    "Anthony Brown <anthony.brown8@nhs.net>",
+    "Jolo Das <jolo.das@nhs.net>",
+    "Azhar Nisar <azhar.nisar@nhs.net>",
+    "Phil Gee <phil.gee@nhs.net>"
+]
+readme = "README.md"
+repository = "https://github.com/NHSDigital/eps-dynamodb-poc"
+package-mode = false
+
+[tool.poetry.dependencies]
+boto3 = "^1.34.144"
+python = "^3.12"
+pyyaml = "^6.0"
+
+[tool.poetry.scripts]
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+cfn-lint = "^1.7.1"
+flake8 = "^7.1.0"
+pip-licenses = "^4.5.1"
+pre-commit = "^3.7.1"
+pytest = "^8.2.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
