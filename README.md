@@ -72,7 +72,7 @@ You can cache the gpg key passphrase by following instructions at https://superu
 
 ### AWS
 
-It is intended that the DynamoDB table (and any other resources) created via the workflows defined in this repository are interacted with via the Spine codebase. In order to do this, you must configure the AWS CLI and authenticate using SSO. To do this follow the steps below from your home directory in your Spine VM (`spineii-user@gen-spineii:~ $`):
+It is intended that the DynamoDB table (and any other resources) created via the workflows defined in this repository are interacted with via the Spine codebase. There is a long-running feature branch in the Spine repo. Follow the steps defined below on your Spine VM to configure the AWS CLI, check-out the branch and authenticate using SSO:
 
 #### Install asdf:
 ```
@@ -84,9 +84,17 @@ Restart your terminal.
 
 #### Install AWS CLI:
 ```
+cd
 asdf plugin-add awscli
 echo awscli 2.11.20 >> .tool-versions
 asdf install
+```
+
+#### Check-out the feature branch
+```
+cd ~/spineii
+git ff
+git checkout feature/eps-dynamodb-poc
 ```
 
 #### Authenticate
@@ -95,14 +103,18 @@ asdf install
 Make sure that you:
 Call your sso-session `sso-session`
 Call your profile `ddb-poc`
+Use `eu-west-2` as your region
+Set output format to `json`
 Select the `EPS Development` account
 ```
-aws configure sso --region eu-west-2
+cd ~/spineii
+make aws-configure
 ```
 
 **Subsequent use** - Log-in:
 ```
-aws sso login --sso-session sso-session
+cd ~/spineii
+make aws-login
 ```
 
 #### Use the CLI
@@ -113,7 +125,7 @@ export AWS_PROFILE=ddb-poc
 
 Check that AWS CLI works:
 ```
-aws s3 ls
+aws s3 dynamodb list-tables
 ```
 
 ### Pre-commit hooks

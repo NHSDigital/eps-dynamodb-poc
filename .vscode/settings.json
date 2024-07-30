@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "awscli",
     "devcontainer",
     "direnv",
     "eamodio",
@@ -9,6 +10,7 @@
     "pytest",
     "Riak",
     "shellcheck",
+    "spineii",
     "timonwong",
     "venv"
   ]
