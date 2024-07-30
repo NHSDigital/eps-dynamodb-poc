@@ -13,14 +13,14 @@ Resources:
     Properties:
       TableName: !Sub ${StackName}-DynamoDbPoc
       AttributeDefinitions:
-        - AttributeName: PrescriptionID
+        - AttributeName: pk
           AttributeType: S
-        - AttributeName: PatientNHSNumber
+        - AttributeName: sk
           AttributeType: S
       KeySchema:
-        - AttributeName: PrescriptionID
+        - AttributeName: pk
           KeyType: HASH
-        - AttributeName: PatientNHSNumber
+        - AttributeName: sk
           KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
 
