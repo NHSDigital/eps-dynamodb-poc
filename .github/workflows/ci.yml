@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+env:
+  BRANCH_NAME: ${{github.event.ref.BRANCH_NAME}}
+
+jobs:
+  quality_checks:
+    uses: ./.github/workflows/quality_checks.yml
+
+  get_commit_id:
+    runs-on: ubuntu-latest
+    outputs:
+      commit_id: ${{steps.commit_id.outputs.commit_id}}
+    steps:
+      - name: Get Commit ID
+        id: commit_id
+        run: echo "commit_id=${{github.sha}}" >> "$GITHUB_OUTPUT"
+
+  package_code:
+    uses: ./.github/workflows/package_and_upload_code.yml
+
+  release_dev:
+    needs: [package_code, get_commit_id]
+    uses: ./.github/workflows/deploy_code.yml
+    with:
+      ARTIFACT_BUCKET_PREFIX: ${{needs.get_commit_id.outputs.commit_id}}
+      AWS_ENVIRONMENT: dev
+      BUILD_ARTIFACT: packaged_code
+      STACK_NAME: ddb-poc
+    secrets:
+      CLOUD_FORMATION_DEPLOY_ROLE: ${{secrets.DEV_CLOUD_FORMATION_DEPLOY_ROLE}}
