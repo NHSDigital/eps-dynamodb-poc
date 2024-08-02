@@ -17,12 +17,21 @@ Resources:
           AttributeType: S
         - AttributeName: sk
           AttributeType: S
+        - AttributeName: nhsNumber
+          AttributeType: S
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
         - AttributeName: sk
           KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes:
+        - IndexName: nhsNumberIndex
+          KeySchema:
+            - AttributeName: nhsNumber
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
