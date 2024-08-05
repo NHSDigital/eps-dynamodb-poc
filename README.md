@@ -125,7 +125,7 @@ export AWS_PROFILE=ddb-poc
 
 Check that AWS CLI works:
 ```
-aws s3 dynamodb list-tables
+aws dynamodb list-tables
 ```
 
 ### Pre-commit hooks
