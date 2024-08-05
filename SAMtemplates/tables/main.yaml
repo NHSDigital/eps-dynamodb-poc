@@ -17,7 +17,9 @@ Resources:
           AttributeType: S
         - AttributeName: sk
           AttributeType: S
-        - AttributeName: nhsNumberDate
+        - AttributeName: nhsNumber
+          AttributeType: S
+        - AttributeName: creationDatetime
           AttributeType: S
       KeySchema:
         - AttributeName: pk
@@ -28,10 +30,14 @@ Resources:
       GlobalSecondaryIndexes:
         - IndexName: nhsNumberDateIndex
           KeySchema:
-            - AttributeName: nhsNumberDate
+            - AttributeName: nhsNumber
               KeyType: HASH
+            - AttributeName: creationDatetime
+              KeyType: RANGE
           Projection:
-            ProjectionType: ALL
+            ProjectionType: INCLUDE
+            NonKeyAttributes:
+              - nhsNumberDate
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
