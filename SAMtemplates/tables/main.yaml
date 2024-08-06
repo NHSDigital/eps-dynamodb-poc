@@ -17,6 +17,8 @@ Resources:
           AttributeType: S
         - AttributeName: sk
           AttributeType: S
+        - AttributeName: prescriptionId
+          AttributeType: S
         - AttributeName: nhsNumber
           AttributeType: S
         - AttributeName: creationDatetime
@@ -38,6 +40,12 @@ Resources:
             ProjectionType: INCLUDE
             NonKeyAttributes:
               - nhsNumberDate
+        - IndexName: prescriptionIdIndex
+          KeySchema:
+            - AttributeName: prescriptionId
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
