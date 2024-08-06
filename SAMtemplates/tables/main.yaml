@@ -39,6 +39,7 @@ Resources:
           Projection:
             ProjectionType: INCLUDE
             NonKeyAttributes:
+              - prescriptionId
               - nhsNumberDate
         - IndexName: prescriptionIdIndex
           KeySchema:
