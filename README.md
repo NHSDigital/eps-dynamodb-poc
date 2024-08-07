@@ -72,61 +72,20 @@ You can cache the gpg key passphrase by following instructions at https://superu
 
 ### AWS
 
-It is intended that the DynamoDB table (and any other resources) created via the workflows defined in this repository are interacted with via the Spine codebase. There is a long-running feature branch in the Spine repo. Follow the steps defined below on your Spine VM to configure the AWS CLI, check-out the branch and authenticate using SSO:
-
-#### Install asdf:
-```
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3
-echo '. $HOME/.asdf/asdf.sh' >> ~/.bashrc
-echo '. $HOME/.asdf/completions/asdf.bash' >> ~/.bashrc
-```
-Restart your terminal.
-
-#### Install AWS CLI:
-```
-cd
-asdf plugin-add awscli
-echo awscli 2.11.20 >> .tool-versions
-asdf install
-```
-
-#### Check-out the feature branch
-```
-cd ~/spineii
-git ff
-git checkout feature/eps-dynamodb-poc
-```
+It is intended that the DynamoDB table (and any other resources) created via the workflows defined in this repository are interacted with via the Spine codebase. There is a long-running feature branch in the Spine repo (`feature/eps-dynamodb-poc`) to hold our code changes. Follow the steps defined below on your Spine VM to allow connection to the DynamoDB table:
 
 #### Authenticate
-**Initial set-up only** - Configure AWS SSO (use the AWS SSO portal in your browser to obtain the values):
 
-Make sure that you:
-Call your sso-session `sso-session`
-Call your profile `ddb-poc`
-Use `eu-west-2` as your region
-Set output format to `json`
-Select the `EPS Development` account
+Navigate to the AWS SSO portal in your browser (and authenticate if necessary). Obtain the Access Keys for the NHS England EPS Development account and add them to a `/tmp/.aws/credentials` file as below:
+
 ```
-cd ~/spineii
-make aws-configure
+[default]
+AWS_ACCESS_KEY_ID=<aws_access_key_id>
+AWS_SECRET_ACCESS_KEY=<aws_secret_access_key>
+AWS_SESSION_TOKEN=<aws_session_token>
 ```
 
-**Subsequent use** - Log-in:
-```
-cd ~/spineii
-make aws-login
-```
-
-#### Use the CLI
-Export your profile so that the AWS CLI picks it up:
-```
-export AWS_PROFILE=ddb-poc
-```
-
-Check that AWS CLI works:
-```
-aws dynamodb list-tables
-```
+These will remain active for a set period, so will need to be refreshed occasionally throughout the day. The services making use of the DynamoDB datastore will need to be restarted when the credentials are refreshed.
 
 ### Pre-commit hooks
 
