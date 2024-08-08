@@ -76,7 +76,7 @@ It is intended that the DynamoDB table (and any other resources) created via the
 
 #### Authenticate
 
-Navigate to the AWS SSO portal in your browser (and authenticate if necessary). Obtain the Access Keys for the NHS England EPS Development account and add them to a `/tmp/.aws/credentials` file as below:
+Navigate to the AWS SSO portal in your browser (and authenticate if necessary). Obtain the Access Keys for the NHS England EPS Development account and add them to a `/home/spineii-user/.aws/credentials` file as below:
 
 ```
 [default]
@@ -86,6 +86,11 @@ AWS_SESSION_TOKEN=<aws_session_token>
 ```
 
 These will remain active for a set period, so will need to be refreshed occasionally throughout the day. The services making use of the DynamoDB datastore will need to be restarted when the credentials are refreshed.
+
+You also need to add the following line to your `.vscode/.env` file:
+```
+AWS_SHARED_CREDENTIALS_FILE=/home/spineii-user/.aws/credentials
+```
 
 ### Pre-commit hooks
 
