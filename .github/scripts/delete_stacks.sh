@@ -42,3 +42,5 @@ delete_cloudformation_stacks() {
     fi
   done
 }
+
+main
