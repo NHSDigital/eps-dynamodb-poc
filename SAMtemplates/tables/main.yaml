@@ -17,8 +17,6 @@ Resources:
           AttributeType: S
         - AttributeName: sk
           AttributeType: S
-        - AttributeName: prescriptionId
-          AttributeType: S
         - AttributeName: nhsNumber
           AttributeType: S
         - AttributeName: creationDatetime
