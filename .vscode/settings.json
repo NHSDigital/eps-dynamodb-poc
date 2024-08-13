@@ -14,5 +14,6 @@
     "spineii",
     "timonwong",
     "venv"
-  ]
+  ],
+  "makefile.configureOnOpen": false
 }

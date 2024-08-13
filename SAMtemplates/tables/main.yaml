@@ -15,12 +15,6 @@ Resources:
       AttributeDefinitions:
         - AttributeName: pk
           AttributeType: S
-        - AttributeName: sk
-          AttributeType: S
-        - AttributeName: documentKey
-          AttributeType: S
-        - AttributeName: prescriptionId
-          AttributeType: S
         - AttributeName: nhsNumber
           AttributeType: S
         - AttributeName: creationDatetime
@@ -28,22 +22,8 @@ Resources:
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
-        - AttributeName: sk
-          KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
       GlobalSecondaryIndexes:
-        - IndexName: documentKeyIndex
-          KeySchema:
-            - AttributeName: documentKey
-              KeyType: HASH
-          Projection:
-            ProjectionType: ALL
-        - IndexName: prescriptionIdIndex
-          KeySchema:
-            - AttributeName: prescriptionId
-              KeyType: HASH
-          Projection:
-            ProjectionType: ALL
         - IndexName: nhsNumberDateIndex
           KeySchema:
             - AttributeName: nhsNumber
