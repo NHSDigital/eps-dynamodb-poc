@@ -37,7 +37,7 @@ Resources:
           Projection:
             ProjectionType: INCLUDE
             NonKeyAttributes:
-              - nhsNumberDate
+              - indexes
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
