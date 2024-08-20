@@ -38,6 +38,8 @@ Resources:
             ProjectionType: INCLUDE
             NonKeyAttributes:
               - indexes
+              - prescriberOrg
+              - dispenserOrg
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
