@@ -57,7 +57,7 @@ Resources:
               - dispenserOrg
         - IndexName: dispenserDate
           KeySchema:
-            - AttributeName: prescriberOrg
+            - AttributeName: dispenserOrg
               KeyType: HASH
             - AttributeName: creationDatetime
               KeyType: RANGE
