@@ -21,6 +21,10 @@ Resources:
           AttributeType: S
         - AttributeName: creationDatetime
           AttributeType: S
+        - AttributeName: prescriberOrg
+          AttributeType: S
+        - AttributeName: dispenserOrg
+          AttributeType: S
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
@@ -28,7 +32,7 @@ Resources:
           KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
       GlobalSecondaryIndexes:
-        - IndexName: nhsNumberDateIndex
+        - IndexName: nhsNumberDate
           KeySchema:
             - AttributeName: nhsNumber
               KeyType: HASH
@@ -40,6 +44,27 @@ Resources:
               - indexes
               - prescriberOrg
               - dispenserOrg
+        - IndexName: prescriberDate
+          KeySchema:
+            - AttributeName: prescriberOrg
+              KeyType: HASH
+            - AttributeName: creationDatetime
+              KeyType: RANGE
+          Projection:
+            ProjectionType: INCLUDE
+            NonKeyAttributes:
+              - indexes
+              - dispenserOrg
+        - IndexName: dispenserDate
+          KeySchema:
+            - AttributeName: prescriberOrg
+              KeyType: HASH
+            - AttributeName: creationDatetime
+              KeyType: RANGE
+          Projection:
+            ProjectionType: INCLUDE
+            NonKeyAttributes:
+              - indexes
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
