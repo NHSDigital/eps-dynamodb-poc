@@ -47,6 +47,10 @@ Resources:
           AttributeType: S
         - AttributeName: dispenserOrg
           AttributeType: S
+        - AttributeName: nominatedPharmacy
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
@@ -91,6 +95,15 @@ Resources:
             ProjectionType: INCLUDE
             NonKeyAttributes:
               - indexes
+        - IndexName: nominatedPharmacyStatus
+          KeySchema:
+            - AttributeName: nominatedPharmacy
+              KeyType: HASH
+          Projection:
+            ProjectionType: INCLUDE
+            NonKeyAttributes:
+              - indexes
+              - status
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
