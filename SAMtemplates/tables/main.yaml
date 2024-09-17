@@ -102,6 +102,14 @@ Resources:
             NonKeyAttributes:
               - indexes
               - status
+        - IndexName: claimId
+          KeySchema:
+            - AttributeName: sk
+              KeyType: HASH
+          Projection:
+            ProjectionType: INCLUDE
+            NonKeyAttributes:
+              - claimIds
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
