@@ -112,6 +112,8 @@ Resources:
               KeyType: HASH
             - AttributeName: nextActivityDate
               KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
