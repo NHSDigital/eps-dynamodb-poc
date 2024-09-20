@@ -49,6 +49,10 @@ Resources:
           AttributeType: S
         - AttributeName: nominatedPharmacy
           AttributeType: S
+        - AttributeName: nextActivity
+          AttributeType: S
+        - AttributeName: nextActivityDate
+          AttributeType: S
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
@@ -110,6 +114,14 @@ Resources:
             ProjectionType: INCLUDE
             NonKeyAttributes:
               - claimIds
+        - IndexName: nextActivityDate
+          KeySchema:
+            - AttributeName: nextActivity
+              KeyType: HASH
+            - AttributeName: nextActivityDate
+              KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
