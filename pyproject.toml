@@ -18,7 +18,7 @@ repository = "https://github.com/NHSDigital/eps-dynamodb-poc"
 package-mode = false
 
 [tool.poetry.dependencies]
-boto3 = "^1.35.23"
+boto3 = "^1.35.25"
 python = "^3.12"
 pyyaml = "^6.0"
 
@@ -26,7 +26,7 @@ pyyaml = "^6.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.8.0"
-cfn-lint = "^1.14.2"
+cfn-lint = "^1.15.0"
 flake8 = "^7.1.1"
 pip-licenses = "^5.0.0"
 pre-commit = "^3.8.0"
