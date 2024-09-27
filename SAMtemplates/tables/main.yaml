@@ -106,6 +106,14 @@ Resources:
             NonKeyAttributes:
               - indexes
               - status
+        - IndexName: claimId
+          KeySchema:
+            - AttributeName: sk
+              KeyType: HASH
+          Projection:
+            ProjectionType: INCLUDE
+            NonKeyAttributes:
+              - claimIds
         - IndexName: nextActivityDate
           KeySchema:
             - AttributeName: nextActivity
