@@ -47,8 +47,6 @@ Resources:
           AttributeType: S
         - AttributeName: dispenserOrg
           AttributeType: S
-        - AttributeName: nominatedPharmacy
-          AttributeType: S
         - AttributeName: nextActivity
           AttributeType: S
         - AttributeName: nextActivityDate
