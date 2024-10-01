@@ -49,6 +49,8 @@ Resources:
           AttributeType: S
         - AttributeName: nominatedPharmacy
           AttributeType: S
+        - AttributeName: status
+          AttributeType: S
         - AttributeName: nextActivity
           AttributeType: S
         - AttributeName: nextActivityDate
@@ -101,11 +103,12 @@ Resources:
           KeySchema:
             - AttributeName: nominatedPharmacy
               KeyType: HASH
+            - AttributeName: status
+              KeyType: RANGE
           Projection:
             ProjectionType: INCLUDE
             NonKeyAttributes:
               - indexes
-              - status
         - IndexName: claimId
           KeySchema:
             - AttributeName: sk
