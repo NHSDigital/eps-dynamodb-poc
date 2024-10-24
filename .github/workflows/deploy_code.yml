@@ -81,7 +81,7 @@ jobs:
         shell: bash
         working-directory: .github/scripts
         env:
-          ARTIFACT_BUCKET_PREFIX: dynamodb_poc/${{inputs.ARTIFACT_BUCKET_PREFIX}}
+          ARTIFACT_BUCKET_PREFIX: spine_eps/${{inputs.ARTIFACT_BUCKET_PREFIX}}
           STACK_NAME: ${{inputs.STACK_NAME}}
           TEMPLATE_FILE: template.yaml
         run: ./deploy_code.sh

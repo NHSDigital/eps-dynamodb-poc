@@ -27,7 +27,7 @@ jobs:
     uses: ./.github/workflows/deploy_code.yml
     with:
       ARTIFACT_BUCKET_PREFIX: ${{needs.get_commit_id.outputs.commit_id}}
-      STACK_NAME: ddb-poc
+      STACK_NAME: spine-eps
       AWS_ENVIRONMENT: dev
       BUILD_ARTIFACT: packaged_code
     secrets:

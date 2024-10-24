@@ -1,4 +1,4 @@
-# EPS DynamoDB POC
+# EPS Datastore
 
 [Build](https://github.com/NHSDigital/eps-dynamodb-poc/actions/workflows/ci.yml/badge.svg?branch=main)  
 [Release](https://github.com/NHSDigital/eps-dynamodb-poc/actions/workflows/release.yml/badge.svg?branch=main)
@@ -174,6 +174,6 @@ Workflows are in the `.github/workflows` folder:
 - `deploy_code.yml` Release code and api built by package_and_upload_code.yml to an environment.
 - `package_and_upload_code.yml` Packages code and api and uploads to a github artifact for later deployment.
 - `pr_title_check.yaml` Checks title of pull request is valid.
-- `pull_request.yml` Called when pull request is opened or updated. Calls package_and_upload_code and deploy_code to build and deploy the code. Deploys to dev AWS account. The main stack deployed adopts the naming convention ddb-poc-pr-<PULL_REQUEST_ID>.
+- `pull_request.yml` Called when pull request is opened or updated. Calls package_and_upload_code and deploy_code to build and deploy the code. Deploys to dev AWS account. The main stack deployed adopts the naming convention spine-eps-pr-<PULL_REQUEST_ID>.
 - `quality_checks.yml` Runs check-licenses, lint, test and SonarCloud scan against the repo. Called from ci.yml, pull_request.yml and release.yml
 - `release.yml` Runs on demand to create a release and deploy to all environments.
