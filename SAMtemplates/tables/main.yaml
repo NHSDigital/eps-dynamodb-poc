@@ -55,6 +55,12 @@ Resources:
           AttributeType: S
         - AttributeName: nextActivityDate
           AttributeType: S
+        - AttributeName: docRefTitle
+          AttributeType: S
+        - AttributeName: storeTime
+          AttributeType: S
+        - AttributeName: backstopDeleteDate
+          AttributeType: S
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
@@ -122,6 +128,22 @@ Resources:
             - AttributeName: nextActivity
               KeyType: HASH
             - AttributeName: nextActivityDate
+              KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: storeTimeDocRefTitle
+          KeySchema:
+            - AttributeName: docRefTitle
+              KeyType: HASH
+            - AttributeName: storeTime
+              KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: backstopDeleteDate
+          KeySchema:
+            - AttributeName: sk
+              KeyType: HASH
+            - AttributeName: backstopDeleteDate
               KeyType: RANGE
           Projection:
             ProjectionType: KEYS_ONLY
