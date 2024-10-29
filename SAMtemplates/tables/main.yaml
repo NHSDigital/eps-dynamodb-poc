@@ -61,6 +61,8 @@ Resources:
           AttributeType: S
         - AttributeName: backstopDeleteDate
           AttributeType: S
+        - AttributeName: prescriptionId
+          AttributeType: S
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
@@ -144,6 +146,14 @@ Resources:
             - AttributeName: sk
               KeyType: HASH
             - AttributeName: backstopDeleteDate
+              KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: prescriptionId
+          KeySchema:
+            - AttributeName: prescriptionId
+              KeyType: HASH
+            - AttributeName: sk
               KeyType: RANGE
           Projection:
             ProjectionType: KEYS_ONLY
