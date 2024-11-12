@@ -65,8 +65,8 @@ Resources:
           AttributeType: S
         - AttributeName: sequenceNumber
           AttributeType: N
-        # - AttributeName: sequenceNumberNwssp
-        #   AttributeType: N
+        - AttributeName: sequenceNumberNwssp
+          AttributeType: N
 
       KeySchema:
         - AttributeName: pk
@@ -168,12 +168,12 @@ Resources:
               KeyType: HASH
           Projection:
             ProjectionType: KEYS_ONLY
-        # - IndexName: claimIdSequenceNumberNwssp
-        #   KeySchema:
-        #     - AttributeName: sequenceNumberNwssp
-        #       KeyType: HASH
-        #   Projection:
-        #     ProjectionType: KEYS_ONLY
+        - IndexName: claimIdSequenceNumberNwssp
+          KeySchema:
+            - AttributeName: sequenceNumberNwssp
+              KeyType: HASH
+          Projection:
+            ProjectionType: KEYS_ONLY
 
   DynamoDbPocResources:
     Type: AWS::Serverless::Application
