@@ -61,6 +61,13 @@ Resources:
           AttributeType: S
         - AttributeName: backstopDeleteDate
           AttributeType: S
+        - AttributeName: prescriptionId
+          AttributeType: S
+        - AttributeName: sequenceNumber
+          AttributeType: N
+        - AttributeName: sequenceNumberNwssp
+          AttributeType: N
+
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
@@ -145,6 +152,26 @@ Resources:
               KeyType: HASH
             - AttributeName: backstopDeleteDate
               KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: prescriptionId
+          KeySchema:
+            - AttributeName: prescriptionId
+              KeyType: HASH
+            - AttributeName: sk
+              KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: claimIdSequenceNumber
+          KeySchema:
+            - AttributeName: sequenceNumber
+              KeyType: HASH
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: claimIdSequenceNumberNwssp
+          KeySchema:
+            - AttributeName: sequenceNumberNwssp
+              KeyType: HASH
           Projection:
             ProjectionType: KEYS_ONLY
 
