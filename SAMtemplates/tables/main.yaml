@@ -16,13 +16,22 @@ Resources:
         Version: 2012-10-17
         Id: key-spine-eps
         Statement:
-          - Sid: Enable IAM User Permissions
-            Effect: Allow
+          - Effect: Allow
             Principal:
               AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
             Action:
               - kms:*
             Resource: "*"
+          - Effect: Allow
+            Principal:
+              AWS: "*"
+            Action:
+              - kms:DescribeKey
+              - kms:Decrypt
+            Resource: "*"
+            Condition:
+              ArnLike:
+                aws:PrincipalArn: !Sub "arn:aws:iam::${AWS::AccountId}:assumed-role/veit_role/*"
 
   DatastoreKMSKeyAlias:
     Type: AWS::KMS::Alias
