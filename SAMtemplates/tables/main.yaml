@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: DDB POC DynamoDB tables and related resources
+Description: Datastore tables and related resources
 
 Parameters:
   StackName:
@@ -8,13 +8,13 @@ Parameters:
     Default: none
 
 Resources:
-  DynamoDbPocKMSKey:
+  DatastoreKMSKey:
     Type: AWS::KMS::Key
     Properties:
       EnableKeyRotation: true
       KeyPolicy:
         Version: 2012-10-17
-        Id: key-ddb-poc
+        Id: key-spine-eps
         Statement:
           - Sid: Enable IAM User Permissions
             Effect: Allow
@@ -24,16 +24,16 @@ Resources:
               - kms:*
             Resource: "*"
 
-  DynamoDbPocKMSKeyAlias:
+  DatastoreKMSKeyAlias:
     Type: AWS::KMS::Alias
     Properties:
-      AliasName: !Sub alias/${StackName}-DynamoDbPocKMSKeyAlias
-      TargetKeyId: !Ref DynamoDbPocKMSKey
+      AliasName: !Sub alias/${StackName}-DatastoreKMSKeyAlias
+      TargetKeyId: !Ref DatastoreKMSKey
 
-  DynamoDbPocTable:
+  DatastoreTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub ${StackName}-DynamoDbPoc
+      TableName: !Sub ${StackName}-datastore
       AttributeDefinitions:
         - AttributeName: pk
           AttributeType: S
@@ -75,7 +75,7 @@ Resources:
           KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
       SSESpecification:
-        KMSMasterKeyId: !Ref DynamoDbPocKMSKey
+        KMSMasterKeyId: !Ref DatastoreKMSKey
         SSEEnabled: true
         SSEType: KMS
       GlobalSecondaryIndexes:
@@ -175,20 +175,20 @@ Resources:
           Projection:
             ProjectionType: KEYS_ONLY
 
-  DynamoDbPocResources:
+  DatastoreResources:
     Type: AWS::Serverless::Application
     Properties:
       Location: dynamodb_resources.yaml
       Parameters:
         StackName: !Ref StackName
-        TableName: !Ref DynamoDbPocTable
-        TableArn: !GetAtt DynamoDbPocTable.Arn
+        TableName: !Ref DatastoreTable
+        TableArn: !GetAtt DatastoreTable.Arn
 
 Outputs:
-  DynamoDbPocTableName:
-    Description: DynamoDB POC table name
-    Value: !Ref DynamoDbPocTable
+  DatastoreTableName:
+    Description: Datastore table name
+    Value: !Ref DatastoreTable
 
-  DynamoDbPocTableArn:
-    Description: DynamoDB POC table arn
-    Value: !GetAtt DynamoDbPocTable.Arn
+  DatastoreTableArn:
+    Description: Datastore table arn
+    Value: !GetAtt DatastoreTable.Arn
