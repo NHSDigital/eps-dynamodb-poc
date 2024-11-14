@@ -30,6 +30,6 @@ jobs:
       ARTIFACT_BUCKET_PREFIX: ${{needs.get_commit_id.outputs.commit_id}}
       AWS_ENVIRONMENT: dev
       BUILD_ARTIFACT: packaged_code
-      STACK_NAME: ddb-poc
+      STACK_NAME: spine-eps
     secrets:
       CLOUD_FORMATION_DEPLOY_ROLE: ${{secrets.DEV_CLOUD_FORMATION_DEPLOY_ROLE}}

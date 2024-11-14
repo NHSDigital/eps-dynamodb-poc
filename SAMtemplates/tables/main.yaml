@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: DDB POC DynamoDB tables and related resources
+Description: Datastore tables and related resources
 
 Parameters:
   StackName:
@@ -8,13 +8,13 @@ Parameters:
     Default: none
 
 Resources:
-  DynamoDbPocKMSKey:
+  DatastoreKMSKey:
     Type: AWS::KMS::Key
     Properties:
       EnableKeyRotation: true
       KeyPolicy:
         Version: 2012-10-17
-        Id: key-ddb-poc
+        Id: key-spine-eps
         Statement:
           - Effect: Allow
             Principal:
@@ -33,16 +33,16 @@ Resources:
               ArnLike:
                 aws:PrincipalArn: !Sub "arn:aws:iam::${AWS::AccountId}:assumed-role/veit_role/*"
 
-  DynamoDbPocKMSKeyAlias:
+  DatastoreKMSKeyAlias:
     Type: AWS::KMS::Alias
     Properties:
-      AliasName: !Sub alias/${StackName}-DynamoDbPocKMSKeyAlias
-      TargetKeyId: !Ref DynamoDbPocKMSKey
+      AliasName: !Sub alias/${StackName}-DatastoreKMSKeyAlias
+      TargetKeyId: !Ref DatastoreKMSKey
 
-  DynamoDbPocTable:
+  DatastoreTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub ${StackName}-DynamoDbPoc
+      TableName: !Sub ${StackName}-datastore
       AttributeDefinitions:
         - AttributeName: pk
           AttributeType: S
@@ -58,6 +58,25 @@ Resources:
           AttributeType: S
         - AttributeName: nominatedPharmacy
           AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: nextActivity
+          AttributeType: S
+        - AttributeName: nextActivityDate
+          AttributeType: S
+        - AttributeName: docRefTitle
+          AttributeType: S
+        - AttributeName: storeTime
+          AttributeType: S
+        - AttributeName: backstopDeleteDate
+          AttributeType: S
+        - AttributeName: prescriptionId
+          AttributeType: S
+        - AttributeName: sequenceNumber
+          AttributeType: N
+        - AttributeName: sequenceNumberNwssp
+          AttributeType: N
+
       KeySchema:
         - AttributeName: pk
           KeyType: HASH
@@ -65,7 +84,7 @@ Resources:
           KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
       SSESpecification:
-        KMSMasterKeyId: !Ref DynamoDbPocKMSKey
+        KMSMasterKeyId: !Ref DatastoreKMSKey
         SSEEnabled: true
         SSEType: KMS
       GlobalSecondaryIndexes:
@@ -106,26 +125,79 @@ Resources:
           KeySchema:
             - AttributeName: nominatedPharmacy
               KeyType: HASH
+            - AttributeName: status
+              KeyType: RANGE
           Projection:
             ProjectionType: INCLUDE
             NonKeyAttributes:
               - indexes
-              - status
+        - IndexName: claimId
+          KeySchema:
+            - AttributeName: sk
+              KeyType: HASH
+          Projection:
+            ProjectionType: INCLUDE
+            NonKeyAttributes:
+              - claimIds
+        - IndexName: nextActivityDate
+          KeySchema:
+            - AttributeName: nextActivity
+              KeyType: HASH
+            - AttributeName: nextActivityDate
+              KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: storeTimeDocRefTitle
+          KeySchema:
+            - AttributeName: docRefTitle
+              KeyType: HASH
+            - AttributeName: storeTime
+              KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: backstopDeleteDate
+          KeySchema:
+            - AttributeName: sk
+              KeyType: HASH
+            - AttributeName: backstopDeleteDate
+              KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: prescriptionId
+          KeySchema:
+            - AttributeName: prescriptionId
+              KeyType: HASH
+            - AttributeName: sk
+              KeyType: RANGE
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: claimIdSequenceNumber
+          KeySchema:
+            - AttributeName: sequenceNumber
+              KeyType: HASH
+          Projection:
+            ProjectionType: KEYS_ONLY
+        - IndexName: claimIdSequenceNumberNwssp
+          KeySchema:
+            - AttributeName: sequenceNumberNwssp
+              KeyType: HASH
+          Projection:
+            ProjectionType: KEYS_ONLY
 
-  DynamoDbPocResources:
+  DatastoreResources:
     Type: AWS::Serverless::Application
     Properties:
       Location: dynamodb_resources.yaml
       Parameters:
         StackName: !Ref StackName
-        TableName: !Ref DynamoDbPocTable
-        TableArn: !GetAtt DynamoDbPocTable.Arn
+        TableName: !Ref DatastoreTable
+        TableArn: !GetAtt DatastoreTable.Arn
 
 Outputs:
-  DynamoDbPocTableName:
-    Description: DynamoDB POC table name
-    Value: !Ref DynamoDbPocTable
+  DatastoreTableName:
+    Description: Datastore table name
+    Value: !Ref DatastoreTable
 
-  DynamoDbPocTableArn:
-    Description: DynamoDB POC table arn
-    Value: !GetAtt DynamoDbPocTable.Arn
+  DatastoreTableArn:
+    Description: Datastore table arn
+    Value: !GetAtt DatastoreTable.Arn
