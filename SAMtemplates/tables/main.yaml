@@ -60,6 +60,8 @@ Resources:
           AttributeType: S
         - AttributeName: status
           AttributeType: S
+        - AttributeName: isReady
+          AttributeType: N
         - AttributeName: nextActivity
           AttributeType: S
         - AttributeName: nextActivityDate
@@ -125,11 +127,12 @@ Resources:
           KeySchema:
             - AttributeName: nominatedPharmacy
               KeyType: HASH
-            - AttributeName: status
+            - AttributeName: isReady
               KeyType: RANGE
           Projection:
             ProjectionType: INCLUDE
             NonKeyAttributes:
+              - status
               - indexes
         - IndexName: claimId
           KeySchema:
