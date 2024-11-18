@@ -58,8 +58,6 @@ Resources:
           AttributeType: S
         - AttributeName: nominatedPharmacy
           AttributeType: S
-        - AttributeName: status
-          AttributeType: S
         - AttributeName: isReady
           AttributeType: N
         - AttributeName: nextActivity
