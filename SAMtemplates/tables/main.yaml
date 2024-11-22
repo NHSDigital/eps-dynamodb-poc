@@ -82,8 +82,6 @@ Resources:
           AttributeType: N
         - AttributeName: sequenceNumberNwssp
           AttributeType: N
-        - AttributeName: expireAt
-          AttributeType: S
 
       BillingMode: PAY_PER_REQUEST
 
