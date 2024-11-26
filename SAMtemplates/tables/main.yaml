@@ -191,15 +191,6 @@ Resources:
         AttributeName: expireAt
         Enabled: true
 
-      ResourcePolicy:
-        PolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: Deny
-              Action: "*"
-              Principal: "*"
-              Resource: "*"
-
   DatastoreResources:
     Type: AWS::Serverless::Application
     Properties:
