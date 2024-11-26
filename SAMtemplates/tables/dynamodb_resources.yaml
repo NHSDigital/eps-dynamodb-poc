@@ -14,6 +14,9 @@ Parameters:
   TableArn:
     Type: String
 
+  KmsKeyArn:
+    Type: String
+
 Resources:
   TableReadManagedPolicy:
     Type: AWS::IAM::ManagedPolicy
@@ -49,6 +52,19 @@ Resources:
               - !Ref TableArn
               - !Sub ${TableArn}/index/*
 
+  KmsKeyDescribeDecryptManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - kms:DescribeKey
+              - kms:Decrypt
+            Resource:
+              - !Ref KmsKeyArn
+
   TableReadWriteRole:
     Type: AWS::IAM::Role
     Properties:
@@ -63,6 +79,7 @@ Resources:
       ManagedPolicyArns:
         - !Ref TableWriteManagedPolicy
         - !Ref TableReadManagedPolicy
+        - !Ref KmsKeyDescribeDecryptManagedPolicy
 
 Outputs:
   TableReadPolicyArn:
