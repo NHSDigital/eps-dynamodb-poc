@@ -56,7 +56,7 @@ Resources:
   TableReadWriteRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub ${StackName}-datastore
+      RoleName: spine-eps-datastore
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
