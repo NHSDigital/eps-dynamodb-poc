@@ -58,7 +58,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS: "arn:aws:iam::591291862413:*"
+              AWS: "591291862413"
             Action: "sts:AssumeRole"
       ManagedPolicyArns:
         - !Ref TableWriteManagedPolicy
