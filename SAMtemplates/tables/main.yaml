@@ -32,6 +32,13 @@ Resources:
             Condition:
               ArnLike:
                 aws:PrincipalArn: !Sub "arn:aws:iam::${AWS::AccountId}:assumed-role/veit_role/*"
+          - Effect: Allow
+            Principal:
+              AWS: "591291862413"
+            Action:
+              - kms:DescribeKey
+              - kms:Decrypt
+            Resource: "*"
 
   DatastoreKMSKeyAlias:
     Type: AWS::KMS::Alias
