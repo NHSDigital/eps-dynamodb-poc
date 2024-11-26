@@ -32,8 +32,6 @@ Resources:
             Resource:
               - !Ref TableArn
               - !Sub ${TableArn}/index/*
-      Roles:
-        - !Ref TableReadWriteRole
 
   TableWriteManagedPolicy:
     Type: AWS::IAM::ManagedPolicy
@@ -50,20 +48,21 @@ Resources:
             Resource:
               - !Ref TableArn
               - !Sub ${TableArn}/index/*
-      Roles:
-        - !Ref TableReadWriteRole
 
   TableReadWriteRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: spine-eps-datastore
+      RoleName: !Sub ${StackName}-datastore
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal:
-              AWS: "arn:aws:iam::591291862413:role/*"
-            Action: sts:AssumeRole
+              AWS: "arn:aws:iam::591291862413:*"
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - !Ref TableWriteManagedPolicy
+        - !Ref TableReadManagedPolicy
 
 Outputs:
   TableReadPolicyArn:
