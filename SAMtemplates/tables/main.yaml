@@ -43,6 +43,12 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: !Sub ${StackName}-datastore
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+
       AttributeDefinitions:
         - AttributeName: pk
           AttributeType: S
@@ -77,16 +83,13 @@ Resources:
         - AttributeName: sequenceNumberNwssp
           AttributeType: N
 
-      KeySchema:
-        - AttributeName: pk
-          KeyType: HASH
-        - AttributeName: sk
-          KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
+
       SSESpecification:
         KMSMasterKeyId: !Ref DatastoreKMSKey
         SSEEnabled: true
         SSEType: KMS
+
       GlobalSecondaryIndexes:
         - IndexName: nhsNumberDate
           KeySchema:
@@ -184,6 +187,10 @@ Resources:
               KeyType: HASH
           Projection:
             ProjectionType: KEYS_ONLY
+
+      TimeToLiveSpecification:
+        AttributeName: expireAt
+        Enabled: true
 
   DatastoreResources:
     Type: AWS::Serverless::Application
