@@ -200,6 +200,7 @@ Resources:
         StackName: !Ref StackName
         TableName: !Ref DatastoreTable
         TableArn: !GetAtt DatastoreTable.Arn
+        KmsKeyArn: !GetAtt DatastoreKMSKey.Arn
 
 Outputs:
   DatastoreTableName:
