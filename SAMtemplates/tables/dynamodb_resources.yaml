@@ -14,6 +14,9 @@ Parameters:
   TableArn:
     Type: String
 
+  KmsKeyArn:
+    Type: String
+
 Resources:
   TableReadManagedPolicy:
     Type: AWS::IAM::ManagedPolicy
@@ -48,6 +51,35 @@ Resources:
             Resource:
               - !Ref TableArn
               - !Sub ${TableArn}/index/*
+
+  KmsKeyDescribeDecryptManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - kms:DescribeKey
+              - kms:Decrypt
+            Resource:
+              - !Ref KmsKeyArn
+
+  TableReadWriteRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${StackName}-datastore
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: "591291862413"
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - !Ref TableWriteManagedPolicy
+        - !Ref TableReadManagedPolicy
+        - !Ref KmsKeyDescribeDecryptManagedPolicy
 
 Outputs:
   TableReadPolicyArn:
